@@ -4,7 +4,7 @@ package example;
 
 import "errors/errors.proto";
 
-option go_package = "github.com/lyouthzzz/protoc-gen-go-errors/examples";
+option go_package = "github.com/lyouthzzz/kratos-component/cmd/protoc-gen-go-errors/examples";
 
 enum ErrorReason {
   // 设置缺省错误码
