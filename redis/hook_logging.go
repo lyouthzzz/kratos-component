@@ -85,6 +85,26 @@ func (logger *loggerHook) ProcessPipelineHook(next redisv9.ProcessPipelineHook) 
 	}
 }
 
+func redisCmderReply(cmd redisv9.Cmder) string {
+	reply := cmd.String()
+	splits := strings.SplitN(reply, ": ", 2)
+	if len(splits) == 2 {
+		return splits[1]
+	}
+	return reply
+}
+
+func redisCmderError(err error) error {
+	switch err {
+	case nil:
+		return nil
+	case redisv9.Nil:
+		return nil
+	default:
+		return err
+	}
+}
+
 func funcFileLine(pkg string) (string, string, int) {
 	const depth = 16
 	var pcs [depth]uintptr
@@ -109,24 +129,4 @@ func funcFileLine(pkg string) (string, string, int) {
 	}
 
 	return fn, file, line
-}
-
-func redisCmderReply(cmd redisv9.Cmder) string {
-	reply := cmd.String()
-	splits := strings.SplitN(reply, ": ", 2)
-	if len(splits) == 2 {
-		return splits[1]
-	}
-	return reply
-}
-
-func redisCmderError(err error) error {
-	switch err {
-	case nil:
-		return nil
-	case redisv9.Nil:
-		return nil
-	default:
-		return err
-	}
 }
